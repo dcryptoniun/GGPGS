@@ -5,15 +5,15 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
-// TODO: Update value to your plugin's name.
-val pluginName = "GodotAndroidPluginTemplate"
 
-// TODO: Update value to match your plugin's package name.
-val pluginPackageName = "org.godotengine.plugin.android.template"
+val pluginName = "GGPGS"
+
+
+val pluginPackageName = "com.teqanta.ggpgs"
 
 android {
     namespace = pluginPackageName
-    compileSdk = 33
+    compileSdk = 35
 
     buildFeatures {
         buildConfig = true
@@ -35,10 +35,12 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    buildToolsVersion = "35.0.0"
 }
 
 dependencies {
-    implementation("org.godotengine:godot:4.3.0.stable")
+    implementation("org.godotengine:godot:4.4.0.stable")
+    implementation("com.google.android.gms:play-services-games-v2:20.1.2")
     // TODO: Additional dependencies should be added to export_plugin.gd as well.
 }
 
