@@ -5,10 +5,10 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
-
+// TODO: Update value to your plugin's name.
 val pluginName = "GGPGS"
 
-
+// TODO: Update value to match your plugin's package name.
 val pluginPackageName = "com.teqanta.ggpgs"
 
 android {
@@ -35,7 +35,6 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-    buildToolsVersion = "35.0.0"
 }
 
 dependencies {
