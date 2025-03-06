@@ -17,9 +17,9 @@
             android:name="org.godotengine.plugin.v2.GGPGS"
             android:value="com.teqanta.ggpgs.GodotAndroidPlugin"/>
     
-        <meta-data
-            android:name="com.google.android.gms.games.APP_ID"
-            android:value="507082211024" />
+<!--        <meta-data-->
+<!--            android:name="com.google.android.gms.games.APP_ID"-->
+<!--            android:value="507082211024" />-->
 
     </application>
 

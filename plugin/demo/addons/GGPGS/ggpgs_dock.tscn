@@ -1,0 +1,90 @@
+[gd_scene load_steps=5 format=3 uid="uid://bx8537vuljblk"]
+
+[ext_resource type="Script" uid="uid://wubvs8nbrhey" path="res://addons/GGPGS/dock.gd" id="1_k0q71"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cmxpt"]
+bg_color = Color(0.00392157, 0.160784, 0, 0.572549)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.285391, 0.612638, 0, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nn0lj"]
+content_margin_left = 30.0
+content_margin_right = 30.0
+bg_color = Color(0.00392157, 0.160784, 0, 0.572549)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j5qpb"]
+bg_color = Color(1.86507e-07, 0.271511, 0.150228, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_blend = true
+
+[node name="Godot Play Game Services" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_k0q71")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "GGPGS - Godot Google Play Games Services Plugin by 0xMayank"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 26
+
+[node name="GameIdLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Game ID:"
+
+[node name="GameId" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/outline_size = 4
+theme_override_constants/caret_width = 0
+theme_override_styles/focus = SubResource("StyleBoxFlat_cmxpt")
+theme_override_styles/normal = SubResource("StyleBoxFlat_nn0lj")
+text = "507082211024"
+placeholder_text = "Game id from google play consol"
+max_length = 20
+virtual_keyboard_type = 2
+clear_button_enabled = true
+draw_control_chars = true
+caret_blink = true
+caret_column = 1
+caret_force_displayed = true
+caret_mid_grapheme = true
+
+[node name="Submit" type="Button" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/outline_size = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_j5qpb")
+text = "Submit"
