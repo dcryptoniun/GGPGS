@@ -1,19 +1,27 @@
-[gd_scene load_steps=2 format=3 uid="uid://cg3hylang5fxn"]
+[gd_scene load_steps=2 format=3 uid="uid://brwd807hrn12i"]
 
-[ext_resource type="Script" path="res://main.gd" id="1_j0gfq"]
+[ext_resource type="Script" uid="uid://bhbeq4qlle7v3" path="res://main.gd" id="1_ig7tw"]
 
 [node name="Main" type="Node2D"]
-script = ExtResource("1_j0gfq")
+script = ExtResource("1_ig7tw")
 
-[node name="Button" type="Button" parent="."]
-anchors_preset = 14
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = 40.0
-offset_top = 250.0
-offset_right = 320.0
-offset_bottom = 312.0
-text = "Hello World"
+[node name="Title" type="Label" parent="."]
+offset_left = 301.0
+offset_top = 22.0
+offset_right = 806.0
+offset_bottom = 90.0
 
-[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
+[node name="LoginButton" type="Button" parent="."]
+offset_left = 277.0
+offset_top = 111.0
+offset_right = 816.0
+offset_bottom = 204.0
+text = "Login"
+
+[node name="PlayerInfo" type="Label" parent="."]
+offset_left = 285.0
+offset_top = 230.0
+offset_right = 822.0
+offset_bottom = 321.0
+
+[connection signal="pressed" from="LoginButton" to="." method="_on_login_button_pressed"]

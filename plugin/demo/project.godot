@@ -10,17 +10,16 @@ config_version=5
 
 [application]
 
-config/name="Android Plugin Demo"
-run/main_scene="res://main.tscn"
-config/features=PackedStringArray("4.2", "GL Compatibility")
+config/name="Playgames services demo"
+run/main_scene="uid://brwd807hrn12i"
+config/features=PackedStringArray("4.4", "Mobile")
 config/icon="res://icon.svg"
 
-[debug]
+[editor_plugins]
 
-settings/stdout/verbose_stdout=true
+enabled=PackedStringArray("res://addons/GGPGS/plugin.cfg")
 
 [rendering]
 
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
+renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true

@@ -1,16 +1,21 @@
 extends Node2D
 
-# TODO: Update to match your plugin's name
+@onready var title : Label = $Title
+@onready var playerinfo : Label = $PlayerInfo
+
 var _plugin_name = "GGPGS"
-var _android_plugin
+var ggpgs_plugin
 
-func _ready():
+func _ready() -> void:
 	if Engine.has_singleton(_plugin_name):
-		_android_plugin = Engine.get_singleton(_plugin_name)
+		ggpgs_plugin = Engine.get_singleton(_plugin_name)
+		ggpgs_plugin.connect("userDetailsSignal",_on_userDetailsSignal)
 	else:
-		printerr("Couldn't find plugin " + _plugin_name)
+		printerr("ggpgs plugin not found")
+		
+func _on_userDetailsSignal(data):
+	playerinfo.text = str(data)
 
-func _on_Button_pressed():
-	if _android_plugin:
-		# TODO: Update to match your plugin's API
-		_android_plugin.helloWorld()
+func _on_login_button_pressed() -> void:
+	if ggpgs_plugin:
+		ggpgs_plugin.login()
