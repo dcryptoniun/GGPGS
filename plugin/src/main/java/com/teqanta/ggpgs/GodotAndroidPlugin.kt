@@ -11,6 +11,8 @@ import com.google.android.gms.games.PlayGames
 import com.google.android.gms.games.PlayGamesSdk
 import com.google.android.gms.games.Player
 import com.google.android.gms.tasks.Task
+import com.teqanta.ggpgs.signal.SignInSignals.userAuthenticated
+import com.teqanta.ggpgs.signal.getSignals
 import org.godotengine.godot.plugin.SignalInfo
 
 class GodotAndroidPlugin(godot: Godot): GodotPlugin(godot) {
@@ -26,37 +28,49 @@ class GodotAndroidPlugin(godot: Godot): GodotPlugin(godot) {
         gamesSignInClient.isAuthenticated().addOnCompleteListener { isAuthenticatedTask ->
             val isAuthenticated = isAuthenticatedTask.isSuccessful &&
                     isAuthenticatedTask.result?.isAuthenticated == true
-
+            emitSignal(
+                godot,
+                BuildConfig.GODOT_PLUGIN_NAME,
+                userAuthenticated,
+                isAuthenticatedTask.result.isAuthenticated
+            )
             if (isAuthenticated) {
                 activity?.let {
                     PlayGames.getPlayersClient(it).currentPlayer.addOnCompleteListener { mTask: Task<Player> ->
                         if (mTask.isSuccessful) {
                             Log.i("userDetailsSignal", "${mTask.result}")
                             emitSignal("userDetailsSignal", "${mTask.result}")
-                            Toast.makeText(
-                                activity,
-                                "Logged in ${mTask.result.playerId}",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            emitSignal(
+                                godot,
+                                BuildConfig.GODOT_PLUGIN_NAME,
+                                userAuthenticated,
+                                isAuthenticatedTask.result.isAuthenticated
+                            )
+
                         } else {
-                            Toast.makeText(
-                                activity,
-                                "Error ${mTask.exception}",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            emitSignal(
+                                godot,
+                                BuildConfig.GODOT_PLUGIN_NAME,
+                                userAuthenticated,
+                                false
+                            )
                         }
                     }
                 }
             } else {
                 Toast.makeText(activity, "Not logged in", Toast.LENGTH_SHORT).show()
+                emitSignal(
+                    godot,
+                    BuildConfig.GODOT_PLUGIN_NAME,
+                    userAuthenticated,
+                    false
+                )
             }
         }
     }
 
     override fun getPluginSignals(): MutableSet<SignalInfo> {
-        val signals: MutableSet<SignalInfo> = mutableSetOf();
-        signals.add(SignalInfo("userDetailsSignal", String::class.java))
-        return signals
+        return getSignals()
     }
 
     @UsedByGodot
@@ -69,6 +83,7 @@ class GodotAndroidPlugin(godot: Godot): GodotPlugin(godot) {
                             if (mTask.isSuccessful) {
                                 Log.i("userDetailsSignal", "${mTask.result}")
                                 emitSignal("userDetailsSignal", "${mTask.result}")
+
                                 Toast.makeText(
                                     activity,
                                     "Logged in ${mTask.result.playerId}",
