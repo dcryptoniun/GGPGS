@@ -38,6 +38,7 @@ android {
 }
 
 dependencies {
+    implementation("com.google.code.gson:gson:2.11.0")
     implementation("org.godotengine:godot:4.4.0.stable")
     implementation("com.google.android.gms:play-services-games-v2:20.1.2")
     // TODO: Additional dependencies should be added to export_plugin.gd as well.

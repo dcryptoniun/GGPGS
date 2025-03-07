@@ -43,12 +43,21 @@ class AndroidExportPlugin extends EditorExportPlugin:
 		else:
 			return PackedStringArray([_plugin_name + "/bin/release/" + _plugin_name + "-release.aar"])
 
-	func _get_android_dependencies(platform, debug):
-		# TODO: Add remote dependices here.
-		if debug:
-			return PackedStringArray(["com.google.android.gms:play-services-games-v2:20.1.2"])
-		else:
-			return PackedStringArray(["com.google.android.gms:play-services-games-v2:20.1.2"])
+	# func _get_android_dependencies(platform, debug):
+	# 	# TODO: Add remote dependices here.
+	# 	if debug:
+	# 		return PackedStringArray(["com.google.android.gms:play-services-games-v2:20.1.2"])
+	# 	else:
+	# 		return PackedStringArray(["com.google.android.gms:play-services-games-v2:20.1.2"])
+
+	func _get_android_dependencies(platform: EditorExportPlatform, debug: bool) -> PackedStringArray:
+		if not _supports_platform(platform):
+			return PackedStringArray()
+		
+		return PackedStringArray([
+			"com.google.code.gson:gson:2.11.0", 
+			"com.google.android.gms:play-services-games-v2:20.1.2"
+			])
 
 	func _get_android_manifest_application_element_contents(platform: EditorExportPlatform, debug: bool) -> String:
 		if not _supports_platform(platform):

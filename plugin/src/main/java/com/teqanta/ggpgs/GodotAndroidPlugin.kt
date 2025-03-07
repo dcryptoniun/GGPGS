@@ -1,4 +1,3 @@
-// TODO: Update to match your plugin's package name.
 package com.teqanta.ggpgs
 
 import android.util.Log
@@ -14,6 +13,9 @@ import com.google.android.gms.tasks.Task
 import com.teqanta.ggpgs.signal.SignInSignals.userAuthenticated
 import com.teqanta.ggpgs.signal.getSignals
 import org.godotengine.godot.plugin.SignalInfo
+import com.google.gson.Gson
+import com.teqanta.ggpgs.player.PlayerData
+import com.teqanta.ggpgs.utils.toStringAndSave
 
 class GodotAndroidPlugin(godot: Godot): GodotPlugin(godot) {
 
@@ -23,7 +25,6 @@ class GodotAndroidPlugin(godot: Godot): GodotPlugin(godot) {
     override fun onGodotSetupCompleted() {
         super.onGodotSetupCompleted()
         activity?.let { PlayGamesSdk.initialize(it) }
-
         gamesSignInClient = activity?.let { PlayGames.getGamesSignInClient(it) }!!
         gamesSignInClient.isAuthenticated().addOnCompleteListener { isAuthenticatedTask ->
             val isAuthenticated = isAuthenticatedTask.isSuccessful &&
@@ -36,10 +37,20 @@ class GodotAndroidPlugin(godot: Godot): GodotPlugin(godot) {
             )
             if (isAuthenticated) {
                 activity?.let {
+                    // In both places where we handle player data (onGodotSetupCompleted and login)
                     PlayGames.getPlayersClient(it).currentPlayer.addOnCompleteListener { mTask: Task<Player> ->
                         if (mTask.isSuccessful) {
-                            Log.i("userDetailsSignal", "${mTask.result}")
-                            emitSignal("userDetailsSignal", "${mTask.result}")
+                            val player = mTask.result
+                            val playerData = PlayerData(
+                                playerId = player.playerId,
+                                displayName = player.displayName,
+                                iconImageUri = player.iconImageUri?.toStringAndSave( godot,
+                                    "iconImageUri",
+                                    player.playerId)
+                            )
+                            val playerJson = Gson().toJson(playerData)
+                            Log.i("userDetailsSignal", playerJson)
+                            emitSignal("userDetailsSignal", playerJson)
                             emitSignal(
                                 godot,
                                 BuildConfig.GODOT_PLUGIN_NAME,
@@ -81,8 +92,9 @@ class GodotAndroidPlugin(godot: Godot): GodotPlugin(godot) {
                     activity?.let {
                         PlayGames.getPlayersClient(it).currentPlayer.addOnCompleteListener { mTask: Task<Player> ->
                             if (mTask.isSuccessful) {
+                                val playerJson = Gson().toJson(mTask.result)
                                 Log.i("userDetailsSignal", "${mTask.result}")
-                                emitSignal("userDetailsSignal", "${mTask.result}")
+                                emitSignal("userDetailsSignal", playerJson)
 
                                 Toast.makeText(
                                     activity,
