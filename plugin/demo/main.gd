@@ -4,7 +4,7 @@ extends Node2D
 @onready var authstatus : Label = %AuthStatus
 @onready var playerid : Label = %PlayerId
 @onready var displayname : Label = %DisplayName
-@onready var imgurl : Label = %ImgUrl
+@onready var testlabel : Label = %TestLabel
 @onready var avatarimg : TextureRect = %AvatarImg
 @onready var loginbutton : Button = %LoginButton
 
@@ -16,9 +16,27 @@ func _ready() -> void:
 		ggpgs_plugin = Engine.get_singleton(_plugin_name)
 		ggpgs_plugin.connect("userDetailsSignal", _on_userDetailsSignal)
 		ggpgs_plugin.connect("userAuthenticated", _on_user_authenticated)
+		ggpgs_plugin.connect("imageStored", _on_image_stored)
 	else:
 		printerr("ggpgs plugin not found")
 	
+
+func _on_image_stored(image_path: String) -> void:
+	print("Image stored at: ", image_path)
+	
+	# Use FileAccess to check if file exists first
+	if not FileAccess.file_exists(image_path):
+		printerr("File does not exist: ", image_path)
+		return
+		
+	# Load image directly
+	var image = Image.load_from_file(image_path)
+	if image:
+		var texture = ImageTexture.create_from_image(image)
+		avatarimg.texture = texture
+		print("Image loaded successfully")
+	else:
+		printerr("Failed to load image from path: ", image_path)
 
 func _on_userDetailsSignal(data: String) -> void:
 	var player_data = JSON.parse_string(data)
@@ -30,13 +48,12 @@ func _on_userDetailsSignal(data: String) -> void:
 		
 		playerid.text = "Player ID: " + player_id
 		displayname.text = "Display Name: " + display_name
-		imgurl.text = "img url: " + avatar_uri
+		
 	else:
 		print("Failed to parse player data")
 		title.text = "Error: Could not load player data"
 		playerid.text = ""
 		displayname.text = ""
-		imgurl.text = ""
 
 func _on_user_authenticated(is_authenticated: bool) -> void:
 	if is_authenticated:

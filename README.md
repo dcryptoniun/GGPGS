@@ -1,10 +1,17 @@
 # GGPGS - Godot Google Play Games Services Plugin
-
+## under development
 GGPGS is a plugin for integrating Google Play Games Services functionalities into Godot projects, enabling developers to easily implement features such as user authentication and data retrieval from Google Play Games Services.
 
 ## Features Progress
-- **Completed:** Login and fetching player info.
-- **Remaining:** Leaderboard, achievements, etc.
+- [✅] Sign in
+- [❌] Sign out
+- [✅] Profile data(Display Name, Player ID)
+- [✅] Avater image
+- [❌] Save Game and Load Game
+- [❌] Achievements
+- [❌] Leaderboards
+- [❌] Events
+
 
 ## Want to build the plugin yourself?
 **Note:** [Android Studio](https://developer.android.com/studio) is the recommended IDE for

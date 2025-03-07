@@ -1,71 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://brwd807hrn12i"]
+[gd_scene load_steps=5 format=3 uid="uid://brwd807hrn12i"]
 
-[sub_resource type="GDScript" id="GDScript_7dm0k"]
-script/source = "extends Node2D
-
-@onready var title : Label = %Title
-@onready var authstatus : Label = %AuthStatus
-@onready var playerid : Label = %PlayerId
-@onready var displayname : Label = %DisplayName
-@onready var imgurl : Label = %ImgUrl
-
-
-@onready var loginbutton : Button = %LoginButton
-
-
-var _plugin_name = \"GGPGS\"
-var ggpgs_plugin
-
-func _ready() -> void:
-	if Engine.has_singleton(_plugin_name):
-		ggpgs_plugin = Engine.get_singleton(_plugin_name)
-		ggpgs_plugin.connect(\"userDetailsSignal\", _on_userDetailsSignal)
-		ggpgs_plugin.connect(\"userAuthenticated\", _on_user_authenticated)
-		#ggpgs_plugin.connect(\"imageStored\", _on_image_stored)
-	else:
-		printerr(\"ggpgs plugin not found\")
-		
-#func _on_image_stored(image_path: String) -> void:
-	#var image = Image.new()
-	#var error = image.load(image_path)
-	#if error == OK:
-		#var texture = ImageTexture.create_from_image(image)
-		#avatarimg.texture = texture
-	#else:
-		#printerr(\"Failed to load image: \" + error,image_path)
-
-func _on_userDetailsSignal(data: String) -> void:
-	
-	var player_data = JSON.parse_string(data)
-	if player_data:
-		# Update UI with player information
-		var display_name = player_data.get(\"displayName\", \"Unknown Player\")
-		var player_id = player_data.get(\"playerId\", \"No ID\")
-		var avatar_uri = player_data.get(\"iconImageUri\", \"No Avatar\")
-		
-		playerid.text = \"Player ID: \" + player_id
-		displayname.text = \"Display Name: \" + display_name
-		imgurl.text = \"img url: \" + avatar_uri
-	else:
-		print(\"Failed to parse player data\")
-		title.text = \"Error: Could not load player data\"
-		playerid.text = \"\"
-		displayname.text = \"\"
-		imgurl.text = \"\"
-
-func _on_user_authenticated(is_authenticated: bool) -> void:
-	if is_authenticated:
-		authstatus.text = \"\" + \"Authenticated\"
-		loginbutton.disabled = true
-		loginbutton.text = \"login successful\"
-	else:
-		authstatus.text = \"\" + \"Not Authenticated\"
-	#testlabel.text = \"Authentication Status: \" + (\"Authenticated\" if is_authenticated else \"Not Authenticated\")
-
-func _on_login_button_pressed() -> void:
-	if ggpgs_plugin:
-		ggpgs_plugin.login()
-"
+[ext_resource type="Script" uid="uid://bhbeq4qlle7v3" path="res://main.gd" id="1_ig7tw"]
+[ext_resource type="Texture2D" uid="uid://bs53l01syaorp" path="res://assets/avatar_mask.png" id="2_0xm2m"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ig7tw"]
 bg_color = Color(0.395704, 0.683481, 0.337839, 1)
@@ -74,7 +10,7 @@ bg_color = Color(0.395704, 0.683481, 0.337839, 1)
 bg_color = Color(0.909804, 0.4, 0.0941176, 1)
 
 [node name="Main" type="Node2D"]
-script = SubResource("GDScript_7dm0k")
+script = ExtResource("1_ig7tw")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -126,16 +62,29 @@ size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 32
 text = "Authentication Status: "
 
-[node name="AvatarImg" type="TextureRect" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/VBoxContainer"]
+self_modulate = Color(0, 0.405335, 0.405363, 1)
+clip_children = 2
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_0xm2m")
+
+[node name="AvatarImg" type="TextureRect" parent="CanvasLayer/MarginContainer/VBoxContainer/TextureRect"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
+offset_right = 150.0
+offset_bottom = 150.0
 size_flags_horizontal = 6
 size_flags_vertical = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_horizontal = 4
+size_flags_vertical = 2
+theme_override_constants/separation = 25
 
 [node name="PlayerId" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
@@ -153,7 +102,7 @@ size_flags_vertical = 0
 theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 
-[node name="ImgUrl" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="TestLabel" type="Label" parent="CanvasLayer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
